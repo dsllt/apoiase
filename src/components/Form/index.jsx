@@ -1,16 +1,33 @@
-import { Container } from './styles'
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+// - nome da postagem
+// - corpo da postagem
+// - data e hora da publicação da postagem
 
+
+import {TextField}  from "@mui/material"
+import { Container } from "./styles"
 
 export function Form(){
-  return(
-    <div className='Form'>
-      <ButtonGroup variant="contained" color='secondary' >
-        <Button sx={{color:'white'}}><ArrowDropDownIcon/></Button>
-        <Button sx={{color:'white'}}>Postar agora</Button>
-      </ButtonGroup>
-    </div>
-  )
+    return(
+        <Container>
+            <label>
+                Nome da postagem
+            </label>
+            <TextField 
+                id="outlined-basic" 
+                label="Digite o nome da postagem" 
+                variant="outlined" 
+                margin='normal'
+            />
+            <label>
+                Corpo da postagem
+            </label>
+            <TextField
+                id="outlined-multiline-static"
+                label="Digite o corpo da postagem"
+                multiline
+                rows={4}
+            />
+           
+        </Container>
+    )
 }
