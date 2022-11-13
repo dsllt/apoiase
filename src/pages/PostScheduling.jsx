@@ -9,7 +9,6 @@ export function PostScheduling(){
     <Container>
       <Header />
       <Form />
-      <SelectionButton />
       <Footer />
     </Container>
   )

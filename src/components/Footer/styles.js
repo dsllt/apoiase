@@ -7,9 +7,9 @@ export const Container = styled.footer`
   align-items: center;
   justify-content: center;
   background-color: #3d4749;
-
+/* 
   position: fixed;
-  bottom: 0;
+  bottom: 0; */
   width: 100%;
 
   > img {

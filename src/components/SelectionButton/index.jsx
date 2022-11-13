@@ -1,6 +1,5 @@
-import { Container } from './styles'
 import React from 'react';
-import { useState, useRef } from 'react';
+
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -12,6 +11,10 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
+
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
 const options = ['Postar agora', 'Agendar postagem'];
 
@@ -45,11 +48,44 @@ export function SelectionButton(){
 
   return(
     <div className='SelectionButton'>
+      {selectedIndex === 1 && 
+        <Stack
+          direction='column'
+          sx={{border:1, borderRadius: 2, borderColor: '#E0E0E0', marginBottom:2, padding: 2}}
+        >
+          <TextField
+          id="date"
+          label="Data"
+          type="date"
+          defaultValue="2022-11-01"
+          sx={{ width: 220 }}
+          margin="normal"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          size="sm"
+          />
+          <TextField
+            id="time"
+            label="Hora"
+            type="time"
+            defaultValue="07:30"
+            margin="normal"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            sx={{ width: 150 }}
+            size="sm"
+          />
+          <Typography align='center' sx={{color:'gray'}}>Horário de Brasília</Typography>
+        </Stack>
+      }
+
       <ButtonGroup 
         variant="contained" 
-        color='secondary' 
         ref={anchorRef}
         aria-label="split button"
+        color='secondary'
       >
         <Button 
           sx={{color:'white'}} 
@@ -64,6 +100,7 @@ export function SelectionButton(){
         </Button>
         <Button sx={{color:'white'}}onClick={handleClick}>{options[selectedIndex]}</Button>
       </ButtonGroup>
+
       <Popper
         sx={{
           zIndex: 1
@@ -94,13 +131,14 @@ export function SelectionButton(){
                     >
                       {option}
                     </MenuItem>
-                  ))}
+                  ))} 
                 </MenuList>
               </ClickAwayListener>
             </Paper>
           </Grow>
         )}
       </Popper>
+
     </div>
   )
 }
