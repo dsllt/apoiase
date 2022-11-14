@@ -1,15 +1,21 @@
-import { Container } from './styles'
+
+import Container from '@mui/material/Container';
 import { Header } from "../components/Header"
-import { SelectionButton } from "../components/SelectionButton"
 import { Footer } from "../components/Footer"
 import { Form } from '../components/Form'
 
 export function PostScheduling(){
   return (
-    <Container>
-      <Header />
-      <Form />
+    <Container disableGutters={true}>
+      <Container
+        component='article'
+        maxWidth='md'
+      >
+        <Header />
+        <Form />
+      </Container>
       <Footer />
     </Container>
+
   )
 }

@@ -18,15 +18,14 @@ import Typography from '@mui/material/Typography';
 
 const options = ['Postar agora', 'Agendar postagem'];
 
-export function SelectionButton(){
+export function SelectionButton({dateTime}){
   
   const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [date, setDate] = React.useState("2022-11-01");
+  const [time, setTime] = React.useState("07:30");
 
-  const handleClick = () => {
-    console.info(`You clicked ${options[selectedIndex]}`);
-  };
+  const anchorRef = React.useRef(null);
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);
@@ -44,7 +43,12 @@ export function SelectionButton(){
 
     setOpen(false);
   };
-
+  function handleChageDate(event){
+    setDate(event.target.value);
+  }
+  function handleChageTime(event){
+    setTime(event.target.value);
+  }
 
   return(
     <div className='SelectionButton'>
@@ -54,28 +58,30 @@ export function SelectionButton(){
           sx={{border:1, borderRadius: 2, borderColor: '#E0E0E0', marginBottom:2, padding: 2}}
         >
           <TextField
-          id="date"
-          label="Data"
-          type="date"
-          defaultValue="2022-11-01"
-          sx={{ width: 220 }}
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          size="sm"
+            id="date"
+            label="Data"
+            type="date"
+            sx={{ width: 220 }}
+            margin="normal"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            size="sm"
+            value={date}
+            onChange={handleChageDate}
           />
           <TextField
             id="time"
             label="Hora"
             type="time"
-            defaultValue="07:30"
             margin="normal"
             InputLabelProps={{
               shrink: true,
             }}
             sx={{ width: 150 }}
             size="sm"
+            value={time}
+            onChange={handleChageTime}
           />
           <Typography align='center' sx={{color:'gray'}}>Horário de Brasília</Typography>
         </Stack>
@@ -98,7 +104,18 @@ export function SelectionButton(){
         >
           <ArrowDropDownIcon/>
         </Button>
-        <Button sx={{color:'white'}}onClick={handleClick}>{options[selectedIndex]}</Button>
+        <Button 
+          sx={{color:'white'}} 
+          onClick={
+            () => {
+              console.info(`You clicked ${options[selectedIndex]}`);
+              dateTime({date, time})
+            }
+          } 
+          type='submit'
+        >
+          {options[selectedIndex]}
+        </Button>
       </ButtonGroup>
 
       <Popper

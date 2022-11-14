@@ -14,23 +14,39 @@ import { ButtonArea } from "./styles"
 import { useState } from "react";
 
 export function Form(){
-        const postVisualization = [
-            "",
-            "Todo mundo",
-            "Colaboradores"
-        ]
+    const postVisualization = [
+        "",
+        "Todo mundo",
+        "Colaboradores"
+    ]
 
+    const [name, setName] = useState('');
+    const [content, setContent] = useState('');
     const [select, setSelect] = useState('');
-    const handleChange = (event) => {
-        setSelect(event.target.value);
-      };
 
+
+
+    function handleChageName(event){
+        setName(event.target.value);
+    }
+    function handleChageContent(event){
+        setContent(event.target.value);
+    }
+    function handleChageSelect(event){
+        setSelect(event.target.value);
+    }
+
+    function showDateTime(value){
+        const date = value.date
+        const time = value.time
+        console.log(date, time)
+        
+    }
     return(
-        <div>
-            <Container
-                component='article'
-                maxWidth='md'
-            >
+        <form onSubmit={event => {
+            event.preventDefault();
+            console.log(select, name, content)}}>
+            <Container>
                 <TextField
                     id="post-name"
                     label="Nome da postagem"
@@ -38,6 +54,8 @@ export function Form(){
                     variant='outlined'
                     margin="normal"
                     fullWidth
+                    onChange={handleChageName}
+                    value={name}
                 />
                 <TextField
                     id="post-content"
@@ -48,6 +66,8 @@ export function Form(){
                     multiline
                     maxRows={40}
                     fullWidth
+                    onChange={handleChageContent}
+                    value={content}
                 />
                 <TextField
                     id="post-visualization"
@@ -57,7 +77,7 @@ export function Form(){
                     margin="normal"
                     select
                     value={select}
-                    onChange={handleChange}
+                    onChange={handleChageSelect}
                     sx={{width: 300, marginBottom: 8}}
                 >
                     {postVisualization.map((option) => (
@@ -74,8 +94,8 @@ export function Form(){
                 sx={{display: 'flex', flexDirection: 'row', justifyContent: 'end',marginBottom: 10, alignItems: 'end'}}
             >
                 <Button variant="text" color='error' > Cancelar </Button>
-                <SelectionButton />
+                <SelectionButton  dateTime={showDateTime}/>
             </Container>
-        </div>
+        </form>
     )
 }
