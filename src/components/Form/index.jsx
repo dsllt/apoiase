@@ -1,19 +1,13 @@
-// - nome da postagem
-// - corpo da postagem
-// - data e hora da publicação da postagem
-
-
 import { Button }  from "@mui/material"
 import Container from '@mui/material/Container';
 
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { SelectionButton } from "../SelectionButton"
-import { ButtonArea } from "./styles"
 
 import { useState } from "react";
 
-export function Form(){
+export function Form({newPost}){
     const postVisualization = [
         "",
         "Todo mundo",
@@ -24,6 +18,9 @@ export function Form(){
     const [content, setContent] = useState('');
     const [select, setSelect] = useState('');
 
+    const [date, setDate] = useState('');
+    const [time, setTime] = useState('');
+    const [option, setOption] = useState('');
 
 
     function handleChageName(event){
@@ -35,17 +32,24 @@ export function Form(){
     function handleChageSelect(event){
         setSelect(event.target.value);
     }
-
     function showDateTime(value){
-        const date = value.date
-        const time = value.time
-        console.log(date, time)
-        
+        setDate(value.date)
+        setTime(value.time)
+        setOption(value.option)
     }
+
+    // - Permitir apenas agendar para horários a partir de 5 minutos do atual
+    // - Permitir que hajam no máximo 3 postagens agendadas para uma data futura
+    // - Retornar mensagem de sucesso ao realizar o agendamento
+
     return(
-        <form onSubmit={event => {
-            event.preventDefault();
-            console.log(select, name, content)}}>
+        <form onSubmit={
+            (event)=>{
+                event.preventDefault();
+                newPost({name, content, select, date, time, option})
+            }
+        }
+        >
             <Container>
                 <TextField
                     id="post-name"
@@ -86,7 +90,6 @@ export function Form(){
                         </MenuItem>
                     ))}
                 </TextField>
-
             </Container>
 
             <Container

@@ -1,9 +1,9 @@
 import React from 'react';
+import { useState, useRef } from 'react'
 
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-
 
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
@@ -16,16 +16,24 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 const options = ['Postar agora', 'Agendar postagem'];
 
 export function SelectionButton({dateTime}){
   
-  const [open, setOpen] = React.useState(false);
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
-  const [date, setDate] = React.useState("2022-11-01");
-  const [time, setTime] = React.useState("07:30");
+  const [open, setOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(1);
+  const [date, setDate] = useState("2022-11-01");
+  const [time, setTime] = useState("07:30");
 
-  const anchorRef = React.useRef(null);
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const anchorRef = useRef(null);
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);
@@ -48,6 +56,13 @@ export function SelectionButton({dateTime}){
   }
   function handleChageTime(event){
     setTime(event.target.value);
+  }
+
+  function handleClickSubmit(){
+    setOpenDialog(true);
+  }
+  function handleCloseSubmit(){
+    setOpenDialog(false);
   }
 
   return(
@@ -108,8 +123,9 @@ export function SelectionButton({dateTime}){
           sx={{color:'white'}} 
           onClick={
             () => {
-              console.info(`You clicked ${options[selectedIndex]}`);
-              dateTime({date, time})
+              handleClickSubmit()
+              let option = options[selectedIndex];
+              dateTime({date, time, option});
             }
           } 
           type='submit'
@@ -155,6 +171,46 @@ export function SelectionButton({dateTime}){
           </Grow>
         )}
       </Popper>
+
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseSubmit}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle 
+          id="alert-dialog-title" 
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            m: 'auto'
+          }}
+        >
+          {"Tudo pronto!"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description" >
+          Sua postagem está agendada para {date} ás {time}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions 
+          sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          m: 'auto'
+        }}
+        >
+          <Button 
+            onClick={handleCloseSubmit} 
+            autoFocus 
+            color='secondary' 
+            variant="contained" 
+            sx={{color:'white'}} 
+          >
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
 
     </div>
   )

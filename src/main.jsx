@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom/client'
 import { PostScheduling } from './pages/PostScheduling'
 import GlobalStyles from './styles/global'
 import { createTheme, ThemeProvider } from '@mui/material'
+import { ApolloProvider } from '@apollo/client'
+import { client } from './lib/apollo'
+
 
 const theme = createTheme({
   palette:{
@@ -14,10 +17,12 @@ const theme = createTheme({
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <PostScheduling />
-    </ThemeProvider>
+    <ApolloProvider client={client}>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <PostScheduling />
+      </ThemeProvider>
+    </ApolloProvider>
   </React.StrictMode>
 )
 
