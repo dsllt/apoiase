@@ -4,7 +4,7 @@ import { PostScheduling } from './pages/PostScheduling'
 import GlobalStyles from './styles/global'
 import { createTheme, ThemeProvider } from '@mui/material'
 import { ApolloProvider } from '@apollo/client'
-import { client } from './lib/apollo'
+import { client } from '../src/lib/apollo'
 
 
 const theme = createTheme({

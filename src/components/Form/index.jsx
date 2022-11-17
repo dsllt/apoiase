@@ -7,6 +7,31 @@ import { SelectionButton } from "../SelectionButton"
 
 import { useState } from "react";
 
+import { gql, useMutation } from '@apollo/client'
+
+const CREATE_NEW_POST_DATA = gql`
+    mutation CreateNewPost($postName: String!,
+        $postBody:  String!,
+        $postVisualization: VisualizacaoDaPostagem!,
+        $postOption: TipoDePostagem!,
+        $dateAndTime:DateTime! ) 
+            {
+                createApoiase(data: 
+                    {
+                        postName: $postName, 
+                        postBody: $postBody,
+                        postVisualization: $postVisualization,
+                        postOption: $postOption,  
+                        postDateAndTime: $dateAndTime, 
+                    }
+                ) {id}
+            }
+
+`
+
+
+
+
 export function Form({newPost}){
     const postVisualization = [
         "",
@@ -21,7 +46,9 @@ export function Form({newPost}){
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [option, setOption] = useState('');
+    const [dateTime, setDateTime] = useState('');
 
+    const [createNewPost] = useMutation(CREATE_NEW_POST_DATA)
 
     function handleChageName(event){
         setName(event.target.value);
@@ -36,6 +63,13 @@ export function Form({newPost}){
         setDate(value.date)
         setTime(value.time)
         setOption(value.option)
+        let year = value.date.slice(0,4)
+        let month = value.date.slice(5,7)
+        let day = value.date.slice(-2)
+        let hour = value.time.slice(0,2)
+        let  minutes = value.time.slice(-2)
+        let date = Date.UTC(year, month, day, hour, minutes)
+        setDateTime(date)
     }
 
     // - Permitir apenas agendar para horários a partir de 5 minutos do atual
@@ -47,6 +81,15 @@ export function Form({newPost}){
             (event)=>{
                 event.preventDefault();
                 newPost({name, content, select, date, time, option})
+                createNewPost({
+                    variables: {
+                        name,
+                        content,
+                        select,
+                        option,
+                        dateTime
+                    }
+                })
             }
         }
         >

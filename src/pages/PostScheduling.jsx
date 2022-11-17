@@ -27,7 +27,6 @@ export function PostScheduling(){
   const [posts, setPosts] = useState([]);
   function addNewPostToDatabase(post){
     setPosts([...posts, post])
-    console.log(posts)
   }
 
 
