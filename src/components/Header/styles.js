@@ -2,7 +2,6 @@ import styled from 'styled-components'
 
 export const Container = styled.header`
   grid-area: content;
-  max-width: 1080px;
   margin: auto;
   height: 116px;
   padding: 32px 48px;

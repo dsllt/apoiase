@@ -32,7 +32,7 @@ export function PostScheduling(){
 
 
   return (
-    <Container disableGutters={true}>
+    <Container disableGutters={true} maxWidth='false' >
       <Container
         component='article'
         maxWidth='md'
