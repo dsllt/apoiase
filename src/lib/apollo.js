@@ -1,9 +1,14 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 
 export const client = new ApolloClient({
-    uri: import.meta.env.VITE_API_URL,
-    headers: {
-        'Authorization': `Bearer ${import.meta.env.VITE_API_ACCESS_TOKEN}`
-    },
-    cache: new InMemoryCache()
+  uri: 'https://api-sa-east-1.hygraph.com/v2/claivzwc22b4901tccbcs9a08/master',
+  headers: {
+    Authorization:
+      'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE2Njg2ODY0MjksImF1ZCI6WyJodHRwczovL2FwaS1zYS1lYXN0LTEuaHlncmFwaC5jb20vdjIvY2xhaXZ6d2MyMmI0OTAxdGNjYmNzOWEwOC9tYXN0ZXIiLCJtYW5hZ2VtZW50LW5leHQuZ3JhcGhjbXMuY29tIl0sImlzcyI6Imh0dHBzOi8vbWFuYWdlbWVudC5ncmFwaGNtcy5jb20vIiwic3ViIjoiMThjMTI1ZjctYjdhNS00M2Y1LTk1MzAtZmFmZGFkZTYyNDBhIiwianRpIjoiY2xhbDB0ZDZmMWVyYzAxdDc1dzl1YXEzeSJ9.gRD_DU6z7cjapD0jfFc1wE1CfykhO_kx7MgDeu07oGdlxyJrGQdzEgGZd9TaaL56xZEqfP5CPQwDns53VDqOLKB1zfQUYykykpav9i9GMmLg87Tgg5GWdN-68C9wSaMgkUJsJWLb0HUn1TVf9prXkmTUVrAM7uiddKLp6mNwOfb8jS5ThVeDbtSietdPgUonR7Wo_0O_q7ZB61h5gFbtL2GUq8AzfqwVG6JsJQzzyS6QRRuKR51yB_2vmu8wUZ9jiaX-r7T64bgatZgG8yey035Tzz42alezL1ddbrWzMyioFF0x-TOiQC_DDmO3UykMjXIy2FzDVjZfiYtFc2zqeWax19cUEPiI1u-Bvppy2TN6yEMcMNXYkfUxQ7RaKoscfBS5jt8nuQGHk0dpSjSbg1KPUX0IRmE-KLUnq5_15OjGCIi56268ybO6EBUtr1Ejqx8c0GLRtCuG0pWVWAdC5meNPhPYFEF81eFgFOgfFHwYk10kmJrSSI--Gyw_GCXZic2XXGLwqcnpfNujqWlDBseWma_TSNPabMVKcG6vfYipuhfowi2DbTEtXk-rmnWU9xEFDKlF--6_HEPX5Yg-ClDrXWMP63u3IYErMNSOiveEUSCrIP1z9yVBlTobJ3U4By3SLmJwDZQbXr4i66q5f4ivNxzEPoVqZlkYSMbrepM'
+  },
+  //import.meta.env.VITE_API_URL,
+  // headers: {
+  //     'Authorization': `Bearer ${import.meta.env.VITE_API_ACCESS_TOKEN}`
+  // },
+  cache: new InMemoryCache()
 })

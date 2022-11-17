@@ -29,10 +29,7 @@ const CREATE_NEW_POST_DATA = gql`
 
 `
 
-
-
-
-export function Form({newPost}){
+export function Form(){
     const postVisualization = [
         "",
         "Todo mundo",
@@ -42,34 +39,50 @@ export function Form({newPost}){
     const [name, setName] = useState('');
     const [content, setContent] = useState('');
     const [select, setSelect] = useState('');
-
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [option, setOption] = useState('');
+    const [newPost, setNewPost] = useState('');
     const [dateTime, setDateTime] = useState('');
 
     const [createNewPost] = useMutation(CREATE_NEW_POST_DATA)
 
-    function handleChageName(event){
+    function handleChangeName(event){
         setName(event.target.value);
     }
-    function handleChageContent(event){
+    function handleChangeContent(event){
         setContent(event.target.value);
     }
-    function handleChageSelect(event){
+    function handleChangeSelect(event){
         setSelect(event.target.value);
     }
     function showDateTime(value){
         setDate(value.date)
         setTime(value.time)
         setOption(value.option)
-        let year = value.date.slice(0,4)
-        let month = value.date.slice(5,7)
-        let day = value.date.slice(-2)
-        let hour = value.time.slice(0,2)
-        let  minutes = value.time.slice(-2)
-        let date = Date.UTC(year, month, day, hour, minutes)
-        setDateTime(date)
+    }    
+    function handleChangeForm(){
+        setNewPost({name, content, select, date, time, option})
+        let year = date.slice(0,4)
+        let month = date.slice(5,7)
+        let day = date.slice(-2)
+        let hour = time.slice(0,2)
+        let minutes = time.slice(-2)
+        let newDate = new Date(year, month, day, hour, minutes)
+        setDateTime(newDate)
+    }
+
+    function handleSubmit(event){
+        event.preventDefault();
+        createNewPost({
+            variables: {
+                name,
+                content,
+                select,
+                option,
+                dateTime
+            }
+        })
     }
 
     // - Permitir apenas agendar para horários a partir de 5 minutos do atual
@@ -77,21 +90,7 @@ export function Form({newPost}){
     // - Retornar mensagem de sucesso ao realizar o agendamento
 
     return(
-        <form onSubmit={
-            (event)=>{
-                event.preventDefault();
-                newPost({name, content, select, date, time, option})
-                createNewPost({
-                    variables: {
-                        name,
-                        content,
-                        select,
-                        option,
-                        dateTime
-                    }
-                })
-            }
-        }
+        <form onSubmit={handleSubmit} onChange={handleChangeForm}
         >
             <Container>
                 <TextField
@@ -101,7 +100,7 @@ export function Form({newPost}){
                     variant='outlined'
                     margin="normal"
                     fullWidth
-                    onChange={handleChageName}
+                    onChange={handleChangeName}
                     value={name}
                 />
                 <TextField
@@ -113,7 +112,7 @@ export function Form({newPost}){
                     multiline
                     maxRows={40}
                     fullWidth
-                    onChange={handleChageContent}
+                    onChange={handleChangeContent}
                     value={content}
                 />
                 <TextField
@@ -124,7 +123,7 @@ export function Form({newPost}){
                     margin="normal"
                     select
                     value={select}
-                    onChange={handleChageSelect}
+                    onChange={handleChangeSelect}
                     sx={{width: 300, marginBottom: 8}}
                 >
                     {postVisualization.map((option) => (

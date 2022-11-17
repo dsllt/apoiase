@@ -51,10 +51,10 @@ export function SelectionButton({dateTime}){
 
     setOpen(false);
   };
-  function handleChageDate(event){
+  function handleChangeDate(event){
     setDate(event.target.value);
   }
-  function handleChageTime(event){
+  function handleChangeTime(event){
     setTime(event.target.value);
   }
 
@@ -63,6 +63,12 @@ export function SelectionButton({dateTime}){
   }
   function handleCloseSubmit(){
     setOpenDialog(false);
+  }
+
+  function handleButtonClick(){
+    handleClickSubmit()
+    let option = options[selectedIndex];
+    dateTime({date, time, option});
   }
 
   return(
@@ -83,7 +89,7 @@ export function SelectionButton({dateTime}){
             }}
             size="sm"
             value={date}
-            onChange={handleChageDate}
+            onChange={handleChangeDate}
           />
           <TextField
             id="time"
@@ -96,7 +102,7 @@ export function SelectionButton({dateTime}){
             sx={{ width: 150 }}
             size="sm"
             value={time}
-            onChange={handleChageTime}
+            onChange={handleChangeTime}
           />
           <Typography align='center' sx={{color:'gray'}}>Horário de Brasília</Typography>
         </Stack>
@@ -121,13 +127,7 @@ export function SelectionButton({dateTime}){
         </Button>
         <Button 
           sx={{color:'white'}} 
-          onClick={
-            () => {
-              handleClickSubmit()
-              let option = options[selectedIndex];
-              dateTime({date, time, option});
-            }
-          } 
+          onClick={handleButtonClick} 
           type='submit'
         >
           {options[selectedIndex]}

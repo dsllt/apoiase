@@ -6,6 +6,7 @@ import { Form } from '../components/Form'
 import { useState } from 'react';
 
 import { gql, useQuery } from '@apollo/client'
+
 const GET_APOIASE_QUERY = gql`
   query {
     apoiases {
@@ -20,16 +21,8 @@ const GET_APOIASE_QUERY = gql`
 `
 
 export function PostScheduling(){
-
-  const {data}=useQuery(GET_APOIASE_QUERY)
+  const { data }=useQuery(GET_APOIASE_QUERY)
   console.log(data)
-
-  const [posts, setPosts] = useState([]);
-  function addNewPostToDatabase(post){
-    setPosts([...posts, post])
-  }
-
-
 
   return (
     <Container disableGutters={true} maxWidth='false' >
@@ -38,7 +31,7 @@ export function PostScheduling(){
         maxWidth='md'
       >
         <Header />
-        <Form newPost={post => addNewPostToDatabase(post)} />
+        <Form />
       </Container>
       <Footer />
     </Container>
