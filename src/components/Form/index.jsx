@@ -9,7 +9,7 @@ import { useState } from "react";
 
 import { gql, useMutation } from '@apollo/client'
 
-const CREATE_NEW_POST_DATA = gql`
+const CREATE_NEW_POST_MUTATION = gql`
     mutation CreateNewPost($postName: String!,
         $postBody:  String!,
         $postVisualization: VisualizacaoDaPostagem!,
@@ -39,13 +39,22 @@ export function Form(){
     const [name, setName] = useState('');
     const [content, setContent] = useState('');
     const [select, setSelect] = useState('');
+    const [selectCamel, setSelectCamel] = useState('');
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [option, setOption] = useState('');
+    const [optionCamel, setOptionCamel] = useState('');
     const [newPost, setNewPost] = useState('');
     const [dateTime, setDateTime] = useState('');
 
-    const [createNewPost] = useMutation(CREATE_NEW_POST_DATA)
+    const [createNewPost] = useMutation(CREATE_NEW_POST_MUTATION)
+
+    function camelize(str) {
+        return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(match, index) {
+          if (+match === 0) return ""; // or if (/\s+/.test(match)) for white spaces
+          return index === 0 ? match.toLowerCase() : match.toUpperCase();
+        });
+      }
 
     function handleChangeName(event){
         setName(event.target.value);
@@ -61,26 +70,28 @@ export function Form(){
         setTime(value.time)
         setOption(value.option)
     }    
-    function handleChangeForm(){
-        setNewPost({name, content, select, date, time, option})
+
+    function handleSubmit(event){
+        event.preventDefault();
+
+        setSelectCamel(camelize(select));
+        setOptionCamel(camelize(option));
+
         let year = date.slice(0,4)
         let month = date.slice(5,7)
         let day = date.slice(-2)
         let hour = time.slice(0,2)
         let minutes = time.slice(-2)
-        let newDate = new Date(year, month, day, hour, minutes)
+        let newDate = (new Date(year, month-1, day, hour, minutes)).toISOString()
         setDateTime(newDate)
-    }
 
-    function handleSubmit(event){
-        event.preventDefault();
         createNewPost({
             variables: {
-                name,
-                content,
-                select,
-                option,
-                dateTime
+                postName: name, 
+                postBody: content,
+                postVisualization: selectCamel,
+                postOption: optionCamel,  
+                dateAndTime: dateTime
             }
         })
     }
@@ -90,7 +101,7 @@ export function Form(){
     // - Retornar mensagem de sucesso ao realizar o agendamento
 
     return(
-        <form onSubmit={handleSubmit} onChange={handleChangeForm}
+        <form onSubmit={handleSubmit} 
         >
             <Container>
                 <TextField
