@@ -53,7 +53,6 @@ export function SelectionButton({dateTime}){
   let currentTime = new Date();
   data.apoiases.map(x => dates.push(new Date(x.postDateAndTime)))
   
-  console.log(dates, currentTime)
 
   let newDate = (new Date(date +' '+ time));
   numberOfFuturePosts = dates.filter(x => x>=newDate).length;
@@ -181,15 +180,17 @@ export function SelectionButton({dateTime}){
   }
 
   function handleButtonClick(){
-    if (disableVerification = false){
-      let option = options[selectedIndex];
-      dateTime({date, time, option});
-      console.log(dateTime)
-    } else {
-      dateTime({});
-    }
-    console.log(date)
     handleClickSubmit()
+    let option = options[selectedIndex];
+    let dateNow = new Date()
+    if (option === 'Postar agora'){
+      setDate(dateNow.toLocaleDateString())
+      setTime(dateNow.toLocaleTimeString().slice(0,4))
+      console.log(date, time)
+    }
+    dateTime({date, time, option});
+    console.log(option)
+
   }
 
   return(
