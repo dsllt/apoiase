@@ -47,7 +47,7 @@ export function Form(){
     const [newPost, setNewPost] = useState('');
     const [dateTime, setDateTime] = useState('');
 
-    const [createNewPost] = useMutation(CREATE_NEW_POST_MUTATION)
+    const [createNewPost] = useMutation(CREATE_NEW_POST_MUTATION);
 
     function camelize(str) {
         return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(match, index) {
@@ -77,12 +77,7 @@ export function Form(){
         setSelectCamel(camelize(select));
         setOptionCamel(camelize(option));
 
-        let year = date.slice(0,4)
-        let month = date.slice(5,7)
-        let day = date.slice(-2)
-        let hour = time.slice(0,2)
-        let minutes = time.slice(-2)
-        let newDate = (new Date(year, month-1, day, hour, minutes)).toISOString()
+        let newDate = (new Date(date + ' ' + time)).toISOString()
         setDateTime(newDate)
 
         createNewPost({
@@ -95,10 +90,6 @@ export function Form(){
             }
         })
     }
-
-    // - Permitir apenas agendar para horários a partir de 5 minutos do atual
-    // - Permitir que hajam no máximo 3 postagens agendadas para uma data futura
-    // - Retornar mensagem de sucesso ao realizar o agendamento
 
     return(
         <form onSubmit={handleSubmit} 

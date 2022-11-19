@@ -24,15 +24,130 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 const options = ['Postar agora', 'Agendar postagem'];
 
+import { gql, useQuery } from '@apollo/client'
+
+const GET_POSTS_QUERY = gql`
+  query {
+    apoiases {
+      postName
+      postBody
+      postVisualization
+      postOption
+      postDateAndTime
+    }
+  }
+`
+
 export function SelectionButton({dateTime}){
-  
   const [open, setOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(1);
   const [date, setDate] = useState("2022-11-01");
   const [time, setTime] = useState("07:30");
-
   const [openDialog, setOpenDialog] = useState(false);
+  
+  const { data } = useQuery(GET_POSTS_QUERY)
+  let dates = [];
+  let numberOfFuturePosts = [];
+  let popUpWindow = ''
+  let disableVerification=''
+  let currentTime = new Date();
+  data.apoiases.map(x => dates.push(new Date(x.postDateAndTime)))
+  
+  console.log(dates, currentTime)
 
+  let newDate = (new Date(date +' '+ time));
+  numberOfFuturePosts = dates.filter(x => x>=newDate).length;
+  
+  if (numberOfFuturePosts <= 3) {
+    currentTime = new Date()
+    if (
+      (newDate.getTime() >= currentTime.getTime()) && 
+      ((newDate.getTime() - currentTime.getTime())/(1000*60) >= 5)) {
+        disableVerification = false;
+        popUpWindow = <Dialog
+        open={openDialog}
+        onClose={handleCloseSubmit}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle 
+          id="alert-dialog-title" 
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            m: 'auto'
+          }}
+        >
+          {"Tudo pronto!"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description" >
+          Sua postagem está agendada para {date} ás {time}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions 
+          sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          m: 'auto'
+        }}
+        >
+          <Button 
+            onClick={handleCloseSubmit} 
+            autoFocus 
+            color='secondary' 
+            variant="contained" 
+            sx={{color:'white'}} 
+          >
+            OK
+          </Button>
+        </DialogActions>
+        </Dialog>
+    } else {
+      disableVerification = true;
+      popUpWindow = <Dialog
+      open={openDialog}
+      onClose={handleCloseSubmit}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle 
+        id="alert-dialog-title" 
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          m: 'auto'
+        }}
+      >
+        {"Não foi possível agendar sua postagem"}
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description" >
+        Por favor, selecione um horário pelo menos 5 minutos no futuro.
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions 
+        sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        m: 'auto'
+      }}
+      >
+        <Button 
+          onClick={handleCloseSubmit} 
+          autoFocus 
+          color='secondary' 
+          variant="contained" 
+          sx={{color:'white'}} 
+        >
+          OK
+        </Button>
+      </DialogActions>
+      </Dialog>
+    }
+  }
+  
+  
   const anchorRef = useRef(null);
 
   const handleMenuItemClick = (event, index) => {
@@ -66,9 +181,15 @@ export function SelectionButton({dateTime}){
   }
 
   function handleButtonClick(){
+    if (disableVerification = false){
+      let option = options[selectedIndex];
+      dateTime({date, time, option});
+      console.log(dateTime)
+    } else {
+      dateTime({});
+    }
+    console.log(date)
     handleClickSubmit()
-    let option = options[selectedIndex];
-    dateTime({date, time, option});
   }
 
   return(
@@ -172,45 +293,8 @@ export function SelectionButton({dateTime}){
         )}
       </Popper>
 
-      <Dialog
-        open={openDialog}
-        onClose={handleCloseSubmit}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle 
-          id="alert-dialog-title" 
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            m: 'auto'
-          }}
-        >
-          {"Tudo pronto!"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description" >
-          Sua postagem está agendada para {date} ás {time}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions 
-          sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          m: 'auto'
-        }}
-        >
-          <Button 
-            onClick={handleCloseSubmit} 
-            autoFocus 
-            color='secondary' 
-            variant="contained" 
-            sx={{color:'white'}} 
-          >
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
+        {popUpWindow}
+  
 
     </div>
   )
